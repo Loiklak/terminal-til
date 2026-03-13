@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TILInput } from "./til-input";
 
 type SetupParameters = {
-  onSubmit: ReturnType<typeof vi.fn>;
+  onSubmit: (content: string, title?: string) => void;
 };
 
 const setup = (params?: Partial<SetupParameters>) => {
