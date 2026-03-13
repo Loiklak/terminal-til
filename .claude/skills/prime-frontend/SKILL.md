@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Frontend Documentation
 
-!`for file in $(find docs/frontend -name "*.md" -type f | sort); do echo "---"; echo "## $file"; echo ""; cat "$file"; echo ""; done`
+Read all the following frontend doc files:
+
+!`find docs/frontend -name "*.md" -type f | sort | sed 's/^/@/'`
 
 Continue what you were doing or say "Ready!" if nothing to do.
