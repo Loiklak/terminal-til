@@ -5,6 +5,7 @@ import { TILEntry } from "./til-entry.tsx";
 interface TILFeedProps {
   entries: TIL[];
   onDelete: (id: string) => void;
+  newEntryId?: string;
 }
 
 function getDateLabel(timestamp: number): string {
@@ -35,7 +36,7 @@ function groupByDate(entries: TIL[]): Map<string, TIL[]> {
   return groups;
 }
 
-export function TILFeed({ entries, onDelete }: TILFeedProps) {
+export function TILFeed({ entries, onDelete, newEntryId }: TILFeedProps) {
   if (entries.length === 0) {
     return (
       <p className="text-center text-muted-foreground text-sm py-12">
@@ -52,7 +53,12 @@ export function TILFeed({ entries, onDelete }: TILFeedProps) {
         <div key={label}>
           <DateSeparator label={label} />
           {items.map((entry) => (
-            <TILEntry key={entry.id} entry={entry} onDelete={onDelete} />
+            <TILEntry
+              key={entry.id}
+              entry={entry}
+              onDelete={onDelete}
+              isNew={entry.id === newEntryId}
+            />
           ))}
         </div>
       ))}

@@ -8,18 +8,20 @@ import type { TIL } from "@/lib/store/interface";
 type SetupParameters = {
   entry: TIL;
   onDelete: (id: string) => void;
+  isNew: boolean;
 };
 
 const setup = (params?: Partial<SetupParameters>) => {
   const defaults: SetupParameters = {
     entry: createTILWithDefaults(),
     onDelete: vi.fn(),
+    isNew: false,
   };
 
-  const { entry, onDelete } = { ...defaults, ...params };
+  const { entry, onDelete, isNew } = { ...defaults, ...params };
   const user = userEvent.setup();
 
-  const renderResult = render(<TILEntry entry={entry} onDelete={onDelete} />);
+  const renderResult = render(<TILEntry entry={entry} onDelete={onDelete} isNew={isNew} />);
 
   return { ...renderResult, user, onDelete };
 };
@@ -64,5 +66,21 @@ describe("TILEntry", () => {
     await user.click(screen.getByRole("button", { name: "Delete" }));
 
     expect(onDelete).toHaveBeenCalledWith(id);
+  });
+
+  it("should apply slide-in animation class when isNew is true", () => {
+    const content = "new entry";
+    const { container } = setup({
+      entry: createTILWithDefaults({ content }),
+      isNew: true,
+    });
+
+    expect(container.firstChild).toHaveClass("animate-entry-in");
+  });
+
+  it("should not apply slide-in animation class when isNew is false", () => {
+    const { container } = setup({ isNew: false });
+
+    expect(container.firstChild).not.toHaveClass("animate-entry-in");
   });
 });

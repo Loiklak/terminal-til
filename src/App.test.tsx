@@ -7,6 +7,12 @@ import { createTILStoreWithDefaults } from "@/test/factories/store";
 import { createTILWithDefaults } from "@/test/factories/til";
 import type { TILStore } from "@/lib/store/interface";
 
+vi.mock("web-haptics", () => ({
+  WebHaptics: class {
+    trigger = vi.fn();
+  },
+}));
+
 type SetupParameters = {
   store: TILStore;
 };
@@ -33,6 +39,7 @@ const setup = async (params?: Partial<SetupParameters>) => {
 describe("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   it("should render the app header", async () => {
@@ -58,6 +65,20 @@ describe("App", () => {
 
     expect(add).toHaveBeenCalledWith(content, undefined);
     expect(await screen.findByText(content)).toBeVisible();
+  });
+
+  it("should not set newEntryId when animation mode is none", async () => {
+    localStorage.setItem("riced-animation", "none");
+    const content = "quiet learning";
+    const add = vi.fn().mockResolvedValue(createTILWithDefaults({ content }));
+    const store = createTILStoreWithDefaults({ add });
+    const { user } = await setup({ store });
+
+    const input = screen.getByPlaceholderText("what did you learn today?");
+    await user.type(input, `${content}{Enter}`);
+
+    const entry = await screen.findByText(content);
+    expect(entry.closest(".animate-entry-in")).not.toBeInTheDocument();
   });
 
   it("should delete entry via store and remove it from the feed", async () => {

@@ -8,6 +8,7 @@ import type { TIL } from "@/lib/store/interface";
 type SetupParameters = {
   entries: TIL[];
   onDelete: (id: string) => void;
+  newEntryId?: string;
 };
 
 const setup = (params?: Partial<SetupParameters>) => {
@@ -16,10 +17,12 @@ const setup = (params?: Partial<SetupParameters>) => {
     onDelete: vi.fn(),
   };
 
-  const { entries, onDelete } = { ...defaults, ...params };
+  const { entries, onDelete, newEntryId } = { ...defaults, ...params };
   const user = userEvent.setup();
 
-  const renderResult = render(<TILFeed entries={entries} onDelete={onDelete} />);
+  const renderResult = render(
+    <TILFeed entries={entries} onDelete={onDelete} newEntryId={newEntryId} />,
+  );
 
   return { ...renderResult, user, onDelete };
 };
@@ -102,5 +105,26 @@ describe("TILFeed", () => {
     await user.click(screen.getByRole("button", { name: "Delete" }));
 
     expect(onDelete).toHaveBeenCalledWith(id);
+  });
+
+  it("should apply slide-in animation to the new entry", () => {
+    const id = "new-one";
+    const { container } = setup({
+      entries: [createTILWithDefaults({ id, createdAt: Date.now() })],
+      newEntryId: id,
+    });
+
+    const entryDiv = container.querySelector(".animate-entry-in");
+    expect(entryDiv).toBeInTheDocument();
+  });
+
+  it("should not apply slide-in animation when newEntryId does not match", () => {
+    const { container } = setup({
+      entries: [createTILWithDefaults({ id: "other", createdAt: Date.now() })],
+      newEntryId: "different-id",
+    });
+
+    const entryDiv = container.querySelector(".animate-entry-in");
+    expect(entryDiv).not.toBeInTheDocument();
   });
 });

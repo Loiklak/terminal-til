@@ -4,10 +4,16 @@ import { TILInput } from "@/components/til-input.tsx";
 import { TILFeed } from "@/components/til-feed.tsx";
 import { useStore } from "@/lib/store/context.tsx";
 import type { TIL } from "@/lib/store/interface.ts";
+import { getAnimation, type AnimationMode } from "@/lib/animation.ts";
+import { getTheme, type Scheme } from "@/lib/theme.ts";
+import { triggerCelebration } from "@/lib/haptics.ts";
 
 function App() {
   const store = useStore();
   const [entries, setEntries] = useState<TIL[]>([]);
+  const [animationMode, setAnimationMode] = useState<AnimationMode>(getAnimation);
+  const [theme, setTheme] = useState<Scheme>(getTheme);
+  const [newEntryId, setNewEntryId] = useState<string>();
 
   useEffect(() => {
     store.getAll().then(setEntries);
@@ -16,6 +22,11 @@ function App() {
   async function handleAdd(content: string, title?: string) {
     const entry = await store.add(content, title);
     setEntries((prev) => [entry, ...prev]);
+
+    if (animationMode !== "none") {
+      setNewEntryId(entry.id);
+    }
+    triggerCelebration(animationMode);
   }
 
   async function handleDelete(id: string) {
@@ -24,9 +35,14 @@ function App() {
   }
 
   return (
-    <AppLayout>
-      <TILInput onSubmit={handleAdd} />
-      <TILFeed entries={entries} onDelete={handleDelete} />
+    <AppLayout
+      animationMode={animationMode}
+      onAnimationChange={setAnimationMode}
+      theme={theme}
+      onThemeChange={setTheme}
+    >
+      <TILInput onSubmit={handleAdd} animationMode={animationMode} />
+      <TILFeed entries={entries} onDelete={handleDelete} newEntryId={newEntryId} />
     </AppLayout>
   );
 }

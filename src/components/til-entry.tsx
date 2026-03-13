@@ -3,6 +3,7 @@ import type { TIL } from "@/lib/store/interface.ts";
 interface TILEntryProps {
   entry: TIL;
   onDelete: (id: string) => void;
+  isNew?: boolean;
 }
 
 function formatTime(timestamp: number): string {
@@ -10,9 +11,9 @@ function formatTime(timestamp: number): string {
   return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
-export function TILEntry({ entry, onDelete }: TILEntryProps) {
+export function TILEntry({ entry, onDelete, isNew }: TILEntryProps) {
   return (
-    <div className="group py-2 pl-2">
+    <div className={`group py-2 pl-2 ${isNew ? "animate-entry-in" : ""}`}>
       <div className="flex gap-2">
         <span className="text-primary font-bold shrink-0">&gt;</span>
         <div className="min-w-0 flex-1">

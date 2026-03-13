@@ -1,47 +1,45 @@
-import { useState } from "react";
-import { setTheme, getTheme, type Scheme } from "@/lib/theme.ts";
+import { setTheme, type Scheme } from "@/lib/theme.ts";
 
-const SCHEMES: { key: Scheme; name: string; emoji: string; color: string }[] = [
-  { key: "catppuccin", name: "Catppuccin", emoji: "🐱", color: "#cba6f7" },
-  { key: "tokyonight", name: "Tokyo Night", emoji: "🌃", color: "#7aa2f7" },
-  { key: "dracula", name: "Dracula", emoji: "🧛", color: "#bd93f9" },
-  { key: "gruvbox", name: "Gruvbox", emoji: "🌾", color: "#d79921" },
-  { key: "nord", name: "Nord", emoji: "❄️", color: "#88c0d0" },
+interface ThemeSwitcherProps {
+  active: Scheme;
+  onChange: (scheme: Scheme) => void;
+}
+
+const SCHEMES: { key: Scheme; name: string; emoji: string }[] = [
+  { key: "catppuccin", name: "Catppuccin", emoji: "\uD83D\uDC31" },
+  { key: "tokyonight", name: "Tokyo Night", emoji: "\uD83C\uDF03" },
+  { key: "dracula", name: "Dracula", emoji: "\uD83E\uDDDB" },
+  { key: "gruvbox", name: "Gruvbox", emoji: "\uD83C\uDF3E" },
+  { key: "nord", name: "Nord", emoji: "\u2744\uFE0F" },
 ];
 
-export function ThemeSwitcher() {
-  const [active, setActive] = useState<Scheme>(getTheme);
+export function getThemeEmoji(scheme: Scheme): string {
+  return SCHEMES.find((s) => s.key === scheme)?.emoji ?? SCHEMES[0].emoji;
+}
 
+export function ThemeSwitcher({ active, onChange }: ThemeSwitcherProps) {
   function handleSwitch(scheme: Scheme) {
     setTheme(scheme);
-    setActive(scheme);
+    onChange(scheme);
   }
 
   return (
-    <nav className="flex gap-0 sm:gap-1" aria-label="Theme switcher">
+    <nav className="flex flex-wrap gap-1" aria-label="Theme switcher">
       {SCHEMES.map((s) => (
         <button
           key={s.key}
           onClick={() => handleSwitch(s.key)}
-          title={s.name}
           aria-label={`Switch to ${s.name} theme`}
           aria-pressed={active === s.key}
-          className={`min-w-11 min-h-11 sm:min-w-0 sm:min-h-0 inline-flex items-center justify-center transition-all sm:px-2 sm:py-1 sm:text-xs sm:border-b-2
-            ${active === s.key
-              ? "sm:border-primary sm:text-foreground"
-              : "sm:border-transparent sm:text-muted-foreground sm:hover:text-foreground"
+          className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-all
+            ${
+              active === s.key
+                ? "bg-surface-1 text-foreground"
+                : "text-muted-foreground hover:text-foreground"
             }`}
         >
-          {/* Emoji on mobile */}
-          <span
-            className={`sm:hidden text-base transition-all
-              ${active === s.key ? "scale-125" : "opacity-50 hover:opacity-100"}`}
-            aria-hidden="true"
-          >
-            {s.emoji}
-          </span>
-          {/* Emoji + label on sm+ */}
-          <span className="hidden sm:inline">{s.emoji} {s.name}</span>
+          <span aria-hidden="true">{s.emoji}</span>
+          {s.name}
         </button>
       ))}
     </nav>
