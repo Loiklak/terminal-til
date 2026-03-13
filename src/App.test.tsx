@@ -7,12 +7,6 @@ import { createTILStoreWithDefaults } from "@/test/factories/store";
 import { createTILWithDefaults } from "@/test/factories/til";
 import type { TILStore } from "@/lib/store/interface";
 
-vi.mock("web-haptics", () => ({
-  WebHaptics: class {
-    trigger = vi.fn();
-  },
-}));
-
 type SetupParameters = {
   store: TILStore;
 };

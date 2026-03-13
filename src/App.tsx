@@ -20,13 +20,14 @@ function App() {
   }, [store]);
 
   async function handleAdd(content: string, title?: string) {
+    triggerCelebration(animationMode);
+
     const entry = await store.add(content, title);
     setEntries((prev) => [entry, ...prev]);
 
     if (animationMode !== "none") {
       setNewEntryId(entry.id);
     }
-    triggerCelebration(animationMode);
   }
 
   async function handleDelete(id: string) {
