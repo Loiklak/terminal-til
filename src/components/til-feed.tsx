@@ -1,37 +1,37 @@
-import type { TIL } from "@/lib/store/interface.ts"
-import { DateSeparator } from "./date-separator.tsx"
-import { TILEntry } from "./til-entry.tsx"
+import type { TIL } from "@/lib/store/interface.ts";
+import { DateSeparator } from "./date-separator.tsx";
+import { TILEntry } from "./til-entry.tsx";
 
 interface TILFeedProps {
-  entries: TIL[]
+  entries: TIL[];
 }
 
 function getDateLabel(timestamp: number): string {
-  const now = new Date()
-  const date = new Date(timestamp)
+  const now = new Date();
+  const date = new Date(timestamp);
 
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const yesterday = new Date(today.getTime() - 86400000)
-  const entryDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today.getTime() - 86400000);
+  const entryDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-  if (entryDay.getTime() === today.getTime()) return "today"
-  if (entryDay.getTime() === yesterday.getTime()) return "yesterday"
+  if (entryDay.getTime() === today.getTime()) return "today";
+  if (entryDay.getTime() === yesterday.getTime()) return "yesterday";
 
-  return date.toLocaleDateString([], { month: "short", day: "numeric" })
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
 }
 
 function groupByDate(entries: TIL[]): Map<string, TIL[]> {
-  const groups = new Map<string, TIL[]>()
+  const groups = new Map<string, TIL[]>();
   for (const entry of entries) {
-    const label = getDateLabel(entry.createdAt)
-    const group = groups.get(label)
+    const label = getDateLabel(entry.createdAt);
+    const group = groups.get(label);
     if (group) {
-      group.push(entry)
+      group.push(entry);
     } else {
-      groups.set(label, [entry])
+      groups.set(label, [entry]);
     }
   }
-  return groups
+  return groups;
 }
 
 export function TILFeed({ entries }: TILFeedProps) {
@@ -40,10 +40,10 @@ export function TILFeed({ entries }: TILFeedProps) {
       <p className="text-center text-muted-foreground text-sm py-12">
         no learnings yet. type something above.
       </p>
-    )
+    );
   }
 
-  const groups = groupByDate(entries)
+  const groups = groupByDate(entries);
 
   return (
     <div>
@@ -56,5 +56,5 @@ export function TILFeed({ entries }: TILFeedProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }

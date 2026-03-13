@@ -12,9 +12,35 @@ Features to dig into : dynamic design system, design system building, connection
 
 # Non pragmatic features to open the system to
 
+## LLM integrations
 - Auto tagging learnings with LLMs
-- Fancy learning graphs
-- TIL post and sharing
+- LLM recap of learnings of the week (make it super pluginable, easy to plug to any LLM provider)
+
+## Storage
 - Giga plugin ecosystem on storage : start simple with local storage, then create connectors for indexedDb, gdrive, firebase, whatever implements the interface.
-- LLM recap of learnings of the week (same must be super easy to plug to any LLM provider)
+- Import / export
+
+## UX & Input
+- Raccourci clavier pour pouvoir ouvrir de n'importe où un input pour écrire un learning
+- Make input a textarea ?
+- Web haptics
+- Comments on a learning
+
+## Search & Discovery
+- Searchbar
+- Filtering by tag
+- Tags search
+- Fancy learning graphs
+
+## Notifications & Engagement
+- Notification si pas de learnings depuis x temps
+
+## Sharing & Social
+- TIL post and sharing
+
+## App & Install
+- Make app an installable PWA
+
+## Design & Lore
+- Page on lore behind the design system
 

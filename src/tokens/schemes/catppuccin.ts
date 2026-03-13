@@ -1,4 +1,4 @@
-import type { Scheme } from "../schema.ts"
+import type { Scheme } from "../schema.ts";
 
 export const catppuccin: Scheme = {
   name: "Catppuccin Mocha",
@@ -38,4 +38,4 @@ export const catppuccin: Scheme = {
   durationFast: "100ms",
   durationNormal: "200ms",
   easeDefault: "cubic-bezier(0.4, 0, 0.2, 1)",
-}
+};

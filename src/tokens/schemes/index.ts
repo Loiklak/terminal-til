@@ -1,5 +1,5 @@
-export { catppuccin } from "./catppuccin.ts"
-export { tokyonight } from "./tokyonight.ts"
-export { dracula } from "./dracula.ts"
-export { gruvbox } from "./gruvbox.ts"
-export { nord } from "./nord.ts"
+export { catppuccin } from "./catppuccin.ts";
+export { tokyonight } from "./tokyonight.ts";
+export { dracula } from "./dracula.ts";
+export { gruvbox } from "./gruvbox.ts";
+export { nord } from "./nord.ts";

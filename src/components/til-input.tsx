@@ -1,23 +1,23 @@
-import { useRef, useState } from "react"
-import { Input } from "@/components/ui/input.tsx"
+import { useRef, useState } from "react";
+import { Input } from "@/components/ui/input.tsx";
 
 interface TILInputProps {
-  onSubmit: (content: string, title?: string) => void
+  onSubmit: (content: string, title?: string) => void;
 }
 
 export function TILInput({ onSubmit }: TILInputProps) {
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const contentRef = useRef<HTMLInputElement>(null)
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const contentRef = useRef<HTMLInputElement>(null);
 
   function handleSubmit() {
-    const trimmed = content.trim()
-    if (!trimmed) return
+    const trimmed = content.trim();
+    if (!trimmed) return;
 
-    const trimmedTitle = title.trim() || undefined
-    onSubmit(trimmed, trimmedTitle)
-    setTitle("")
-    setContent("")
+    const trimmedTitle = title.trim() || undefined;
+    onSubmit(trimmed, trimmedTitle);
+    setTitle("");
+    setContent("");
   }
 
   return (
@@ -27,8 +27,8 @@ export function TILInput({ onSubmit }: TILInputProps) {
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            e.preventDefault()
-            contentRef.current?.focus()
+            e.preventDefault();
+            contentRef.current?.focus();
           }
         }}
         placeholder="title (optional)"
@@ -44,8 +44,8 @@ export function TILInput({ onSubmit }: TILInputProps) {
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              e.preventDefault()
-              handleSubmit()
+              e.preventDefault();
+              handleSubmit();
             }
           }}
           placeholder="what did you learn today?"
@@ -54,5 +54,5 @@ export function TILInput({ onSubmit }: TILInputProps) {
         />
       </div>
     </div>
-  )
+  );
 }

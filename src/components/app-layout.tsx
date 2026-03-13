@@ -1,8 +1,8 @@
-import type { ReactNode } from "react"
-import { ThemeSwitcher } from "./theme-switcher.tsx"
+import type { ReactNode } from "react";
+import { ThemeSwitcher } from "./theme-switcher.tsx";
 
 interface AppLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
@@ -14,9 +14,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           <ThemeSwitcher />
         </div>
       </header>
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        {children}
-      </main>
+      <main className="max-w-2xl mx-auto px-4 py-6">{children}</main>
     </div>
-  )
+  );
 }

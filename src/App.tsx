@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react"
-import { AppLayout } from "@/components/app-layout.tsx"
-import { TILInput } from "@/components/til-input.tsx"
-import { TILFeed } from "@/components/til-feed.tsx"
-import { localStorageStore } from "@/lib/store/local-storage.ts"
-import type { TIL } from "@/lib/store/interface.ts"
+import { useEffect, useState } from "react";
+import { AppLayout } from "@/components/app-layout.tsx";
+import { TILInput } from "@/components/til-input.tsx";
+import { TILFeed } from "@/components/til-feed.tsx";
+import { localStorageStore } from "@/lib/store/local-storage.ts";
+import type { TIL } from "@/lib/store/interface.ts";
 
-const store = localStorageStore
+const store = localStorageStore;
 
 function App() {
-  const [entries, setEntries] = useState<TIL[]>([])
+  const [entries, setEntries] = useState<TIL[]>([]);
 
   useEffect(() => {
-    store.getAll().then(setEntries)
-  }, [])
+    store.getAll().then(setEntries);
+  }, []);
 
   async function handleAdd(content: string, title?: string) {
-    const entry = await store.add(content, title)
-    setEntries((prev) => [entry, ...prev])
+    const entry = await store.add(content, title);
+    setEntries((prev) => [entry, ...prev]);
   }
 
   return (
@@ -24,7 +24,7 @@ function App() {
       <TILInput onSubmit={handleAdd} />
       <TILFeed entries={entries} />
     </AppLayout>
-  )
+  );
 }
 
-export default App
+export default App;

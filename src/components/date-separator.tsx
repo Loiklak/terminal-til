@@ -1,5 +1,5 @@
 interface DateSeparatorProps {
-  label: string
+  label: string;
 }
 
 export function DateSeparator({ label }: DateSeparatorProps) {
@@ -9,5 +9,5 @@ export function DateSeparator({ label }: DateSeparatorProps) {
       <span className="text-xs text-muted-foreground font-mono">{label}</span>
       <div className="h-px flex-1 bg-border" />
     </div>
-  )
+  );
 }

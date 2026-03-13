@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { setTheme, getTheme, type Scheme } from "@/lib/theme.ts"
+import { useState } from "react";
+import { setTheme, getTheme, type Scheme } from "@/lib/theme.ts";
 
 const SCHEMES: { key: Scheme; name: string; emoji: string; color: string }[] = [
   { key: "catppuccin", name: "Catppuccin", emoji: "🐱", color: "#cba6f7" },
@@ -7,14 +7,14 @@ const SCHEMES: { key: Scheme; name: string; emoji: string; color: string }[] = [
   { key: "dracula", name: "Dracula", emoji: "🧛", color: "#bd93f9" },
   { key: "gruvbox", name: "Gruvbox", emoji: "🌾", color: "#d79921" },
   { key: "nord", name: "Nord", emoji: "❄️", color: "#88c0d0" },
-]
+];
 
 export function ThemeSwitcher() {
-  const [active, setActive] = useState<Scheme>(getTheme)
+  const [active, setActive] = useState<Scheme>(getTheme);
 
   function handleSwitch(scheme: Scheme) {
-    setTheme(scheme)
-    setActive(scheme)
+    setTheme(scheme);
+    setActive(scheme);
   }
 
   return (
@@ -45,5 +45,5 @@ export function ThemeSwitcher() {
         </button>
       ))}
     </nav>
-  )
+  );
 }
