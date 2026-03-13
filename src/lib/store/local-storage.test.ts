@@ -76,4 +76,30 @@ describe("localStorageStore", () => {
       expect(stored[0].content).toBe("second");
     });
   });
+
+  describe("delete", () => {
+    it("should remove the entry with the given id", async () => {
+      const entries = [
+        { id: "1", content: "first", createdAt: 1000 },
+        { id: "2", content: "second", createdAt: 2000 },
+      ];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+      await localStorageStore.delete("2");
+
+      const result = await localStorageStore.getAll();
+      expect(result).toHaveLength(1);
+      expect(result[0].content).toBe("first");
+    });
+
+    it("should do nothing when id does not exist", async () => {
+      const entries = [{ id: "1", content: "only entry", createdAt: 1000 }];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+      await localStorageStore.delete("nonexistent-id");
+
+      const result = await localStorageStore.getAll();
+      expect(result).toHaveLength(1);
+    });
+  });
 });

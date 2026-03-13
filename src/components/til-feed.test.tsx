@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TILFeed } from "./til-feed";
 import { createTILWithDefaults } from "@/test/factories/til";
@@ -6,16 +7,21 @@ import type { TIL } from "@/lib/store/interface";
 
 type SetupParameters = {
   entries: TIL[];
+  onDelete: (id: string) => void;
 };
 
 const setup = (params?: Partial<SetupParameters>) => {
   const defaults: SetupParameters = {
     entries: [],
+    onDelete: vi.fn(),
   };
 
-  const { entries } = { ...defaults, ...params };
+  const { entries, onDelete } = { ...defaults, ...params };
+  const user = userEvent.setup();
 
-  return render(<TILFeed entries={entries} />);
+  const renderResult = render(<TILFeed entries={entries} onDelete={onDelete} />);
+
+  return { ...renderResult, user, onDelete };
 };
 
 describe("TILFeed", () => {
@@ -83,5 +89,18 @@ describe("TILFeed", () => {
     expect(todayLabels).toHaveLength(1);
     expect(screen.getByText(first)).toBeVisible();
     expect(screen.getByText(second)).toBeVisible();
+  });
+
+  it("should call onDelete when entry delete button is clicked", async () => {
+    const id = "delete-me";
+    const onDelete = vi.fn();
+    const { user } = setup({
+      entries: [createTILWithDefaults({ id, createdAt: Date.now() })],
+      onDelete,
+    });
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(onDelete).toHaveBeenCalledWith(id);
   });
 });

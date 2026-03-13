@@ -13,5 +13,6 @@ export const createTILStoreWithDefaults = (overrides?: Partial<MockTILStore>): M
     .mockImplementation((content: string, title?: string) =>
       Promise.resolve(createTILWithDefaults({ content, title })),
     ),
+  delete: vi.fn<TILStore["delete"]>().mockResolvedValue(undefined),
   ...overrides,
 });

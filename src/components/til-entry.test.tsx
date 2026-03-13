@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TILEntry } from "./til-entry";
 import { createTILWithDefaults } from "@/test/factories/til";
@@ -6,16 +7,21 @@ import type { TIL } from "@/lib/store/interface";
 
 type SetupParameters = {
   entry: TIL;
+  onDelete: (id: string) => void;
 };
 
 const setup = (params?: Partial<SetupParameters>) => {
   const defaults: SetupParameters = {
     entry: createTILWithDefaults(),
+    onDelete: vi.fn(),
   };
 
-  const { entry } = { ...defaults, ...params };
+  const { entry, onDelete } = { ...defaults, ...params };
+  const user = userEvent.setup();
 
-  return render(<TILEntry entry={entry} />);
+  const renderResult = render(<TILEntry entry={entry} onDelete={onDelete} />);
+
+  return { ...renderResult, user, onDelete };
 };
 
 describe("TILEntry", () => {
@@ -48,5 +54,15 @@ describe("TILEntry", () => {
     setup();
 
     expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+  });
+
+  it("should call onDelete with entry id when delete button is clicked", async () => {
+    const id = "entry-to-delete";
+    const onDelete = vi.fn();
+    const { user } = setup({ entry: createTILWithDefaults({ id }), onDelete });
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(onDelete).toHaveBeenCalledWith(id);
   });
 });

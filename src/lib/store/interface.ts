@@ -8,4 +8,5 @@ export interface TIL {
 export interface TILStore {
   getAll(): Promise<TIL[]>;
   add(content: string, title?: string): Promise<TIL>;
+  delete(id: string): Promise<void>;
 }

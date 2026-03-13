@@ -18,10 +18,15 @@ function App() {
     setEntries((prev) => [entry, ...prev]);
   }
 
+  async function handleDelete(id: string) {
+    await store.delete(id);
+    setEntries((prev) => prev.filter((e) => e.id !== id));
+  }
+
   return (
     <AppLayout>
       <TILInput onSubmit={handleAdd} />
-      <TILFeed entries={entries} />
+      <TILFeed entries={entries} onDelete={handleDelete} />
     </AppLayout>
   );
 }

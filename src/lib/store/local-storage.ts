@@ -33,4 +33,9 @@ export const localStorageStore: TILStore = {
     writeEntries(entries);
     return entry;
   },
+
+  async delete(id) {
+    const entries = readEntries();
+    writeEntries(entries.filter((e) => e.id !== id));
+  },
 };

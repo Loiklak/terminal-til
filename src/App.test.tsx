@@ -59,4 +59,24 @@ describe("App", () => {
     expect(add).toHaveBeenCalledWith(content, undefined);
     expect(await screen.findByText(content)).toBeVisible();
   });
+
+  it("should delete entry via store and remove it from the feed", async () => {
+    const id = "to-delete";
+    const content = "will be deleted";
+    const deleteFn = vi.fn().mockResolvedValue(undefined);
+    const store = createTILStoreWithDefaults({
+      getAll: vi
+        .fn()
+        .mockResolvedValue([createTILWithDefaults({ id, content, createdAt: Date.now() })]),
+      delete: deleteFn,
+    });
+    const { user } = await setup({ store });
+
+    expect(screen.getByText(content)).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+
+    expect(deleteFn).toHaveBeenCalledWith(id);
+    expect(screen.queryByText(content)).not.toBeInTheDocument();
+  });
 });

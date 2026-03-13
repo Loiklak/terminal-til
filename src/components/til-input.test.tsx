@@ -90,4 +90,15 @@ describe("TILInput", () => {
 
     expect(contentInput).toHaveFocus();
   });
+
+  it("should not submit on Shift+Enter and allow newline", async () => {
+    const onSubmit = vi.fn();
+    const { user } = setup({ onSubmit });
+
+    const contentInput = screen.getByPlaceholderText("what did you learn today?");
+    await user.type(contentInput, "line one{Shift>}{Enter}{/Shift}line two");
+
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(contentInput).toHaveValue("line one\nline two");
+  });
 });
